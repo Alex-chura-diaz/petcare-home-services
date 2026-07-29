@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use App\Domains\Usuarios\Models\User;
 use App\Models\Mascota;
 use App\Models\RegistroVacunacion;
 use App\Models\Servicio;
