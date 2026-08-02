@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\RegistroVacunacion;
+use App\Domains\Mascotas\Models\RegistroVacunacion;
 
 class VerificacionVacunaController extends Controller
 {

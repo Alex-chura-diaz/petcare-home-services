@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reserva;
-use App\Models\Mascota;
+use App\Domains\Mascotas\Models\Mascota;
 use App\Models\Servicio;
 use App\Models\Proveedor;
 use App\Services\ReservaService;

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Mascota;
+use App\Domains\Mascotas\Models\Mascota;
 use App\Models\Servicio;
 use App\Models\Reserva;
 use Exception;

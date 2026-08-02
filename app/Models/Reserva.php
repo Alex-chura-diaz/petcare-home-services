@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Usuarios\Models\User;
+use App\Domains\Mascotas\Models\Mascota;
 
 class Reserva extends Model
 {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Mascota;
+use App\Domains\Mascotas\Models\Mascota;
 
 class MascotaController extends Controller
 {
