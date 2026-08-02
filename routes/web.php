@@ -8,7 +8,7 @@ use App\Domains\Mascotas\Http\Controllers\VerificacionVacunaController;
 use App\Domains\Reservas\Http\Controllers\ReservaProveedorController;
 use App\Domains\Usuarios\Http\Controllers\NotificacionController;
 use App\Domains\Usuarios\Http\Controllers\AuthController;
-use App\Http\Controllers\ProveedorPerfilController;
+use App\Domains\Proveedores\Http\Controllers\ProveedorPerfilController;
 
 Route::get('/login', [AuthController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');

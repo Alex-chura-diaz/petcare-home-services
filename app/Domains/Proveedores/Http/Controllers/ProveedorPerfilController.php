@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Proveedores\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domains\Proveedores\Models\Proveedor;
 use App\Domains\Proveedores\Models\Sucursal;
 use App\Domains\Servicios\Models\Servicio;
+use App\Http\Controllers\Controller;
 
 class ProveedorPerfilController extends Controller
 {
