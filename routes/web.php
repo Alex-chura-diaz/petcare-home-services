@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MascotaController;
+use App\Domains\Mascotas\Http\Controllers\MascotaController;
 use App\Http\Controllers\ReservaViewController;
 use App\Http\Controllers\VacunaController;
 use App\Http\Controllers\VerificacionVacunaController;
