@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Reserva;
+use App\Domains\Reservas\Models\Reserva;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 

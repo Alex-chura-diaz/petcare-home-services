@@ -5,7 +5,7 @@ namespace App\Domains\Proveedores\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Servicios\Models\Servicio;
-use App\Models\Reserva;
+use App\Domains\Reservas\Models\Reserva;
 use App\Domains\Usuarios\Models\User;
 
 class Proveedor extends Model

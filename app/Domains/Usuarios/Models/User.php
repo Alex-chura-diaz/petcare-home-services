@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Proveedores\Models\Proveedor;
-use App\Models\Reserva;
+use App\Domains\Reservas\Models\Reserva;
 
 
 class User extends Authenticatable

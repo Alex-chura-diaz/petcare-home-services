@@ -17,7 +17,7 @@ class ReservaController extends Controller
 
     public function index()
     {
-        $reservas = \App\Models\Reserva::with(['usuario', 'mascota', 'servicio', 'proveedor'])->get();
+        $reservas = \App\Domains\Reservas\Models\Reserva::with(['usuario', 'mascota', 'servicio', 'proveedor'])->get();
         return response()->json($reservas);
     }
 

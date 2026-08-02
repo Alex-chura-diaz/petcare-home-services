@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Servicios\Models\Servicio;
-use App\Models\Reserva;
+use App\Domains\Reservas\Models\Reserva;
 use Exception;
 
 class ReservaService

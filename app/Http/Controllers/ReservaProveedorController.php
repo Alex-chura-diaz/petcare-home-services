@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reserva;
+use App\Domains\Reservas\Models\Reserva;
 use App\Notifications\ReservaConfirmadaNotification;
 use App\Notifications\ReservaCompletadaNotification;
 
