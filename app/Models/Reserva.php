@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Usuarios\Models\User;
 use App\Domains\Mascotas\Models\Mascota;
+use App\Domains\Servicios\Models\Servicio;
 
 class Reserva extends Model
 {

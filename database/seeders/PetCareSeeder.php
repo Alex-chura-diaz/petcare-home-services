@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Domains\Usuarios\Models\User;
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Mascotas\Models\RegistroVacunacion;
-use App\Models\Servicio;
+use App\Domains\Servicios\Models\Servicio;
 use App\Models\Sucursal;
 use App\Models\Proveedor;
 use App\Models\Reserva;
