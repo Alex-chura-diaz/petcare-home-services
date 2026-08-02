@@ -6,8 +6,8 @@ use App\Http\Controllers\ReservaViewController;
 use App\Http\Controllers\VacunaController;
 use App\Http\Controllers\VerificacionVacunaController;
 use App\Http\Controllers\ReservaProveedorController;
-use App\Http\Controllers\NotificacionController;
-use App\Http\Controllers\AuthController;
+use App\Domains\Usuarios\Http\Controllers\NotificacionController;
+use App\Domains\Usuarios\Http\Controllers\AuthController;
 use App\Http\Controllers\ProveedorPerfilController;
 
 Route::get('/login', [AuthController::class, 'mostrarLogin'])->name('login');
