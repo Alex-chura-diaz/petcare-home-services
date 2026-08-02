@@ -49,7 +49,7 @@ class MascotaController extends Controller
     public function show(Mascota $mascota)
     {
         $mascota->load('registrosVacunacion');
-        $veterinarios = \App\Models\Proveedor::whereHas('servicios', function ($query) {
+        $veterinarios = \App\Domains\Proveedores\Models\Proveedor::whereHas('servicios', function ($query) {
             $query->where('tipo', 'veterinaria');
         })->where('estado', 'activo')->get();
 

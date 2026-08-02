@@ -8,8 +8,8 @@ use App\Domains\Usuarios\Models\User;
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Mascotas\Models\RegistroVacunacion;
 use App\Domains\Servicios\Models\Servicio;
-use App\Models\Sucursal;
-use App\Models\Proveedor;
+use App\Domains\Proveedores\Models\Sucursal;
+use App\Domains\Proveedores\Models\Proveedor;
 use App\Models\Reserva;
 
 class PetCareSeeder extends Seeder

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domains\Usuarios\Models\User;
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Servicios\Models\Servicio;
+use App\Domains\Proveedores\Models\Proveedor;
 
 class Reserva extends Model
 {

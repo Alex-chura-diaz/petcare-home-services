@@ -3,7 +3,7 @@ namespace App\Domains\Mascotas\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Proveedor;
+use App\Domains\Proveedores\Models\Proveedor;
 
 class RegistroVacunacion extends Model
 {

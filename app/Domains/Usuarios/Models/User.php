@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Domains\Mascotas\Models\Mascota;
-use App\Models\Proveedor;
+use App\Domains\Proveedores\Models\Proveedor;
 use App\Models\Reserva;
 
 

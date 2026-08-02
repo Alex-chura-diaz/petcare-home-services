@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Proveedor;
-use App\Models\Sucursal;
+use App\Domains\Proveedores\Models\Proveedor;
+use App\Domains\Proveedores\Models\Sucursal;
 use App\Domains\Servicios\Models\Servicio;
 
 class ProveedorPerfilController extends Controller
