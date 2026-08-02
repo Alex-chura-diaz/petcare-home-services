@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Reservas\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Domains\Reservas\Models\Reserva;
 use App\Services\ReservaService;
 use Exception;
+use App\Http\Controllers\Controller;
 
 class ReservaController extends Controller
 {
@@ -17,7 +19,7 @@ class ReservaController extends Controller
 
     public function index()
     {
-        $reservas = \App\Domains\Reservas\Models\Reserva::with(['usuario', 'mascota', 'servicio', 'proveedor'])->get();
+        $reservas = Reserva::with(['usuario', 'mascota', 'servicio', 'proveedor'])->get();
         return response()->json($reservas);
     }
 

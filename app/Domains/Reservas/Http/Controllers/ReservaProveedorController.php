@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Reservas\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domains\Reservas\Models\Reserva;
+use App\Domains\Proveedores\Models\Proveedor;
 use App\Notifications\ReservaConfirmadaNotification;
 use App\Notifications\ReservaCompletadaNotification;
+use App\Http\Controllers\Controller;
 
 class ReservaProveedorController extends Controller
 {

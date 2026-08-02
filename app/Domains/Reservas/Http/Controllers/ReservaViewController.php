@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Domains\Reservas\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domains\Reservas\Models\Reserva;
@@ -8,6 +7,7 @@ use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Servicios\Models\Servicio;
 use App\Domains\Proveedores\Models\Proveedor;
 use App\Services\ReservaService;
+use App\Http\Controllers\Controller;
 use Exception;
 
 class ReservaViewController extends Controller

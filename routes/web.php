@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Domains\Mascotas\Http\Controllers\MascotaController;
-use App\Http\Controllers\ReservaViewController;
-use App\Http\Controllers\VacunaController;
-use App\Http\Controllers\VerificacionVacunaController;
-use App\Http\Controllers\ReservaProveedorController;
+use App\Domains\Reservas\Http\Controllers\ReservaViewController;
+use App\Domains\Mascotas\Http\Controllers\VacunaController;
+use App\Domains\Mascotas\Http\Controllers\VerificacionVacunaController;
+use App\Domains\Reservas\Http\Controllers\ReservaProveedorController;
 use App\Domains\Usuarios\Http\Controllers\NotificacionController;
 use App\Domains\Usuarios\Http\Controllers\AuthController;
 use App\Http\Controllers\ProveedorPerfilController;
