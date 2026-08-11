@@ -1,71 +1,203 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 🐾 PetCare Home Services
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web para la gestión de servicios y reservas en línea para el cuidado de mascotas.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Descripción del proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**PetCare Home Services** es una plataforma web desarrollada para una empresa dedicada al cuidado de mascotas.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+El sistema permite a los propietarios gestionar sus mascotas y realizar reservas de diferentes servicios, mientras que los proveedores pueden administrar su disponibilidad y gestionar las reservas recibidas.
 
-## Learning Laravel
+Entre los principales servicios se encuentran:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- 🐕 Cuidado y atención de mascotas
+- ✂️ Peluquería y grooming
+- 🩺 Servicios veterinarios
+- 🚶 Paseo de mascotas
+- 🏠 Servicios a domicilio
+- 🏨 Hospedaje de mascotas
+- 💉 Registro y verificación de vacunación
+- 📅 Gestión de reservas
+- 💳 Gestión de pagos
+- 🔔 Notificaciones
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+# 🏗️ Arquitectura de Software
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Para representar la arquitectura del sistema se utiliza el modelo **C4 Model**, permitiendo describir el sistema desde diferentes niveles de abstracción.
 
-### Premium Partners
+Los diagramas desarrollados son:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. **C1 — Diagrama de Contexto**
+2. **C2 — Diagrama de Contenedores**
+3. **C3 — Diagrama de Componentes**
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 1. 🌎 C1 — Diagrama de Contexto
 
-## Code of Conduct
+El diagrama de contexto representa el nivel más general del sistema y muestra los principales actores que interactúan con **PetCare Home Services**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 👤 Propietario de mascota
 
-## Security Vulnerabilities
+Persona que posee una o más mascotas y utiliza la plataforma para:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Gestionar sus mascotas.
+- Consultar servicios.
+- Realizar reservas.
+- Consultar el estado de sus reservas.
+- Registrar y cargar información de vacunación.
 
-## License
+### 🧑‍⚕️ Proveedor de servicios
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Empleado, contratista o franquicia que utiliza la plataforma para:
 
+- Gestionar los servicios ofrecidos.
+- Administrar su disponibilidad.
+- Consultar reservas.
+- Actualizar el estado de los servicios.
+- Verificar los requisitos de las mascotas.
 
-## Estado del proyecto — PetCare Home Services
+### 🐾 PetCare Home Services
 
-Este README fue adaptado para el proyecto **PetCare Home Services** (kata de sistemas).
+Plataforma web encargada de conectar a los propietarios de mascotas con los proveedores de servicios.
 
-Módulos funcionando: usuarios, mascotas, vacunación, servicios, sucursales, proveedores y reservas, con autenticación por roles (dueño/proveedor).
+El sistema administra:
+
+- Usuarios
+- Mascotas
+- Servicios
+- Reservas
+- Vacunación
+- Proveedores
+- Pagos
+- Notificaciones
+
+### 📊 Diagrama C1
+
+![C1 - Diagrama de Contexto](C1-contexto.png)
+
+---
+
+# 2. 🧩 C2 — Diagrama de Contenedores
+
+El diagrama de contenedores muestra los principales elementos tecnológicos que forman parte de **PetCare Home Services**.
+
+## 🌐 Aplicación Web
+
+La aplicación web está desarrollada utilizando **Laravel y PHP**.
+
+Es responsable de gestionar:
+
+- Autenticación de usuarios.
+- Gestión de mascotas.
+- Gestión de servicios.
+- Gestión de proveedores.
+- Gestión de reservas.
+- Registro y verificación de vacunas.
+- Gestión de pagos.
+- Notificaciones.
+- Reglas de negocio.
+
+## 🗄️ Base de Datos
+
+El sistema utiliza **MySQL** para almacenar la información de la aplicación.
+
+Entre los datos almacenados se encuentran:
+
+- Usuarios
+- Mascotas
+- Vacunas
+- Servicios
+- Proveedores
+- Sucursales
+- Reservas
+- Pagos
+- Notificaciones
+
+## 👥 Usuarios
+
+Los principales usuarios que interactúan con la aplicación son:
+
+### Propietario de mascota
+
+Utiliza el sistema para gestionar sus mascotas y reservar servicios.
+
+### Proveedor de servicios
+
+Utiliza el sistema para administrar servicios, disponibilidad y reservas.
+
+### 📊 Diagrama C2
+
+![C2 - Diagrama de Contenedores](C2-contenedores.png)
+
+---
+
+# 3. ⚙️ C3 — Diagrama de Componentes
+
+El diagrama de componentes representa la estructura interna de la aplicación Laravel y muestra cómo se organizan sus principales componentes.
+
+## 🖥️ Vistas
+
+Las vistas proporcionan la interfaz mediante la cual los usuarios interactúan con el sistema.
+
+Entre ellas se encuentran:
+
+- Vistas de mascotas.
+- Vistas de reservas.
+- Vistas de servicios.
+- Vistas de proveedores.
+- Vistas de vacunación.
+- Dashboards.
+
+## 🎮 Controladores
+
+Los controladores reciben las solicitudes realizadas desde las vistas y coordinan las operaciones necesarias.
+
+Entre los principales controladores se encuentran:
+
+- `MascotaController`
+- `ReservaController`
+- `ProveedorController`
+- `ServicioController`
+- `VacunaController`
+- `VerificacionVacunaController`
+
+## 🧱 Modelos
+
+Los modelos representan las principales entidades del sistema y permiten interactuar con la base de datos.
+
+Entre ellos:
+
+- Usuario
+- Mascota
+- Reserva
+- Proveedor
+- Servicio
+- Vacuna
+
+## 🗄️ Base de Datos
+
+Los modelos interactúan con **MySQL** para almacenar y consultar la información del sistema.
+
+## 🔄 Flujo principal
+
+```text
+Usuario
+   ↓
+Vista
+   ↓
+Controlador
+   ↓
+Modelo
+   ↓
+Base de Datos
+
+### 📊 Diagrama C3
+
+![C3 - Diagrama de Componentes](C3-componentes.png)
+
+---
