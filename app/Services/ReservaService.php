@@ -5,10 +5,19 @@ namespace App\Services;
 use App\Domains\Mascotas\Models\Mascota;
 use App\Domains\Servicios\Models\Servicio;
 use App\Domains\Reservas\Models\Reserva;
+use App\Domains\Reservas\Events\ReservaCreada;
+use App\Infrastructure\Events\EventBus;
 use Exception;
 
 class ReservaService
 {
+    protected EventBus $eventBus;
+
+    public function __construct(EventBus $eventBus)
+    {
+        $this->eventBus = $eventBus;
+    }
+
     public function crear(array $datos): Reserva
     {
         $servicio = Servicio::findOrFail($datos['servicio_id']);
@@ -24,10 +33,18 @@ class ReservaService
                 ->exists();
 
             if (!$tieneVacunaValida) {
-                throw new Exception('La mascota no tiene una vacuna verificada y vigente, requerida para este servicio.');
+                throw new Exception(
+                    'La mascota no tiene una vacuna verificada y vigente, requerida para este servicio.'
+                );
             }
         }
 
-        return Reserva::create($datos);
+        $reserva = Reserva::create($datos);
+
+        $this->eventBus->publish(
+            new ReservaCreada($reserva)
+        );
+
+        return $reserva;
     }
 }
