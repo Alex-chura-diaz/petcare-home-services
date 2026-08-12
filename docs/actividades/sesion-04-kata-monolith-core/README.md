@@ -16,14 +16,6 @@ Identificar los hechos importantes que ocurren dentro de los dominios de **PetCa
 
 Un evento representa un hecho que **ya ocurrió** en el sistema.
 
-Ejemplo:
-
-```text
-Usuario crea una reserva
-        ↓
-ReservaCreada
-```
-
 ---
 
 ## 2. Dominios analizados
@@ -53,27 +45,10 @@ A partir de las operaciones existentes en los controladores y modelos se identif
 | Reservas | `ReservaCompletada` | Cuando se completa una reserva |
 | Proveedores | `ProveedorRegistrado` | Cuando se registra un proveedor |
 
----
-
-## 4. Eventos principales seleccionados
-
-Para la implementación se comenzará con los siguientes eventos:
-
-```text
-UsuarioRegistrado
-MascotaRegistrada
-VacunaRegistrada
-ProveedorRegistrado
-ReservaCreada
-ReservaConfirmada
-ReservaCompletada
-```
-
-Los eventos `ReservaRechazada` y `ProveedorRegistrado` quedan identificados para una posible ampliación.
 
 ---
 
-## 5. Mapa general
+## 4. Mapa general 
 
 ```text
 Usuarios
@@ -95,84 +70,483 @@ Proveedores
 
 ---
 
-## 6. Ejemplo del flujo
 
-Para una reserva:
+## 4.1 Flujo del evento Reserva
+
+Cuando se crea una reserva, el flujo es:
 
 ```text
-Usuario
-   ↓
-Crea una reserva
-   ↓
-ReservaController
-   ↓
+ReservaService
+      │
+      ▼
+Reserva::create()
+      │
+      ▼
 ReservaCreada
-   ↓
-Event Bus
-   ↓
-Listeners
+      │
+      ▼
+EventBus::publish()
 ```
-
-El evento `ReservaCreada` podrá contener información como:
-
-```text
-reservaId
-mascotaId
-proveedorId
-servicioId
-fecha
-```
-
-Los datos definitivos dependerán de los atributos existentes en el modelo `Reserva`.
 
 ---
 
-## 7. Evolución de la actividad
+# 5. Actividad 2 — Bus de eventos en memoria
 
-La implementación se realizará en tres etapas.
+## 5.1 Interfaz `EventBus`
 
-### Etapa 1 – Mapeo
+Para evitar que el dominio dependa directamente de una implementación concreta, se creó la interfaz:
 
 ```text
-Dominio
-   ↓
-Hecho importante
-   ↓
-Evento de dominio
+app/Infrastructure/Events/EventBus.php
 ```
 
-### Etapa 2 – Bus en memoria
+La interfaz define dos operaciones:
 
-```text
-Dominio
-   ↓
-Evento
-   ↓
-Event Bus
-   ↓
-Listeners
+```php
+public function publish(object $event): void;
+
+public function subscribe(string $eventClass, callable $listener): void;
 ```
 
-### Etapa 3 – Broker externo
+Estas operaciones representan:
+
+* `publish()` → publicar un evento.
+* `subscribe()` → registrar un listener para un evento.
+
+## 5.2 Implementación inicial
+
+La primera implementación fue:
 
 ```text
-Dominio
-   ↓
-Evento
-   ↓
-Event Bus
-   ↓
+InMemoryEventBus
+```
+
+Su arquitectura era:
+
+```text
+ReservaService
+      │
+      ▼
+EventBus
+      │
+      ▼
+InMemoryEventBus
+      │
+      ▼
+ReservaCreadaListener
+```
+
+El `InMemoryEventBus` almacenaba los listeners en memoria y los ejecutaba cuando se publicaba el evento correspondiente.
+
+## 5.3 Ventajas
+
+El bus en memoria permitió:
+
+* Separar el dominio de la infraestructura.
+* Definir una abstracción común mediante `EventBus`.
+* Registrar listeners de forma sencilla.
+* Probar el mecanismo de eventos sin depender inicialmente de un broker externo.
+
+## 5.4 Limitaciones
+
+Sin embargo, el bus en memoria presenta algunas limitaciones:
+
+* Los mensajes solamente existen dentro del proceso actual.
+* No existe persistencia externa de los mensajes.
+* No permite distribuir fácilmente los eventos entre diferentes procesos.
+* No proporciona las capacidades propias de un broker de mensajes.
+* La aplicación debe permanecer activa para ejecutar los listeners.
+
+Por estas razones se decidió evolucionar hacia RabbitMQ.
+
+---
+
+# 6. Actividad 3 — Refactorización hacia RabbitMQ
+
+## 6.1 ¿Por qué RabbitMQ?
+
+RabbitMQ permite utilizar un broker de mensajes externo para almacenar y distribuir los mensajes entre productores y consumidores.
+
+Esto permite separar:
+
+```text
+Productor
+```
+
+de:
+
+```text
+Consumidor
+```
+
+En este proyecto:
+
+```text
+Laravel
+   │
+   ▼
 RabbitMQ
-   ↓
-Consumers
+   │
+   ▼
+Laravel Queue Worker
 ```
 
-De esta manera, el proyecto evolucionará desde un bus de eventos en memoria hacia una arquitectura orientada a eventos utilizando un broker externo.
+## 6.2 Implementación de `LaravelEventBus`
+
+Se creó:
+
+```text
+app/Infrastructure/Events/LaravelEventBus.php
+```
+
+Esta implementación mantiene la misma interfaz:
+
+```text
+EventBus
+```
+
+pero utiliza el sistema de eventos de Laravel:
+
+```text
+LaravelEventBus
+      │
+      ▼
+Laravel Events
+      │
+      ▼
+Laravel Queue
+      │
+      ▼
+RabbitMQ
+```
+
+Esto permite cambiar la implementación del bus sin modificar la lógica principal del dominio.
+
+## 6.3 Cambio realizado en `AppServiceProvider`
+
+La aplicación dejó de utilizar:
+
+```php
+InMemoryEventBus
+```
+
+y pasó a utilizar:
+
+```php
+LaravelEventBus
+```
+
+La dependencia se registra mediante:
+
+```php
+$this->app->singleton(EventBus::class, function () {
+    return new LaravelEventBus();
+});
+```
+
+De esta forma, cuando una clase necesita `EventBus`, Laravel proporciona la implementación configurada.
 
 ---
 
-## Resultado
+# 7. Listener procesado mediante RabbitMQ
 
-Se realizó el mapeo inicial de los eventos de dominio de **PetCare Home Services**, identificando los principales hechos del negocio que podrán ser publicados y consumidos por diferentes componentes del sistema.
+El listener:
 
-Este mapeo servirá como base para la implementación del **bus de eventos en memoria** y posteriormente su integración con un **broker de mensajes externo**.
+```text
+ReservaCreadaListener
+```
+
+implementa:
+
+```php
+Illuminate\Contracts\Queue\ShouldQueue
+```
+
+Esto indica que su ejecución debe realizarse mediante el sistema de colas.
+
+El flujo final es:
+
+```text
+ReservaCreada
+      │
+      ▼
+ReservaCreadaListener
+      │
+      │ ShouldQueue
+      ▼
+Laravel Queue
+      │
+      ▼
+RabbitMQ
+      │
+      ▼
+queue:work rabbitmq
+      │
+      ▼
+handle()
+```
+
+Dentro del listener se procesa la reserva y se genera la notificación correspondiente.
+
+---
+
+# 8. Configuración de RabbitMQ
+
+La aplicación utiliza RabbitMQ como conexión de cola.
+
+En el archivo `.env` se configuró:
+
+```env
+QUEUE_CONNECTION=rabbitmq
+```
+
+RabbitMQ proporciona la cola:
+
+```text
+default
+```
+
+La administración del servidor RabbitMQ puede visualizarse mediante RabbitMQ Management.
+
+En un entorno local se puede acceder a:
+
+```text
+http://localhost:15672
+```
+
+---
+
+# 9. Ejecución del worker
+
+Para iniciar el consumidor de mensajes se utiliza:
+
+```powershell
+php artisan queue:work rabbitmq
+```
+
+Este proceso permanece ejecutándose y espera nuevos mensajes en RabbitMQ.
+
+Cuando recibe un evento pendiente, se muestra:
+
+```text
+App\Domains\Reservas\Listeners\ReservaCreadaListener
+RUNNING
+```
+
+y posteriormente:
+
+```text
+App\Domains\Reservas\Listeners\ReservaCreadaListener
+DONE
+```
+
+Esto demuestra que el listener fue ejecutado correctamente.
+
+---
+
+# 10. Verificación de la cola
+
+Para consultar el estado de la cola RabbitMQ se utiliza:
+
+```powershell
+rabbitmqctl.bat list_queues name messages messages_ready messages_unacknowledged
+```
+
+Por ejemplo:
+
+```text
+name     messages    messages_ready    messages_unacknowledged
+default  2           2                 0
+```
+
+Esto significa que existen dos mensajes pendientes de procesamiento.
+
+Después de ejecutar:
+
+```powershell
+php artisan queue:work rabbitmq
+```
+
+los mensajes fueron procesados.
+
+El estado final fue:
+
+```text
+name     messages    messages_ready    messages_unacknowledged
+default  0           0                 0
+```
+
+Esto demuestra que los mensajes fueron consumidos correctamente.
+
+---
+
+# 11. Verificación de la notificación
+
+Después de procesar el evento, se verificó la creación de una notificación en la tabla:
+
+```text
+notifications
+```
+
+La notificación contiene información como:
+
+```text
+titulo:
+Nueva reserva creada
+
+mensaje:
+Tu reserva de "Consulta veterinaria" para blue
+el 21/08/2026 21:30 fue creada y está pendiente
+de confirmación.
+```
+
+Por lo tanto, se comprobó el flujo completo:
+
+```text
+Reserva creada
+      ↓
+Evento ReservaCreada
+      ↓
+RabbitMQ
+      ↓
+ReservaCreadaListener
+      ↓
+ReservaCreadaNotification
+      ↓
+notifications
+```
+
+---
+
+# 12. Evidencias de funcionamiento
+
+Para demostrar la implementación se realizaron las siguientes verificaciones:
+
+### Eventos registrados
+
+```powershell
+php artisan event:list
+```
+
+Resultado esperado:
+
+```text
+App\Domains\Reservas\Events\ReservaCreada
+    ⇂ App\Domains\Reservas\Listeners\ReservaCreadaListener (ShouldQueue)
+```
+
+### Worker
+
+```powershell
+php artisan queue:work rabbitmq
+```
+
+Resultado:
+
+```text
+ReservaCreadaListener RUNNING
+ReservaCreadaListener DONE
+```
+
+### Estado de RabbitMQ
+
+```powershell
+rabbitmqctl.bat list_queues name messages messages_ready messages_unacknowledged
+```
+
+Resultado final:
+
+```text
+default    0    0    0
+```
+
+### Notificación
+
+La notificación fue almacenada correctamente en:
+
+```text
+notifications
+```
+
+---
+
+# 13. Comparación de las implementaciones
+
+| Característica              | InMemoryEventBus       | RabbitMQ             |
+| --------------------------- | ---------------------- | -------------------- |
+| Ejecución                   | En memoria             | Broker externo       |
+| Persistencia de mensajes    | No                     | Sí                   |
+| Distribución entre procesos | Limitada               | Sí                   |
+| Desacoplamiento             | Sí                     | Sí                   |
+| Manejo mediante workers     | No directamente        | Sí                   |
+| Escalabilidad               | Limitada               | Mayor                |
+| Dependencia externa         | No                     | RabbitMQ             |
+| Uso en el proyecto          | Implementación inicial | Implementación final |
+
+---
+
+# 14. Arquitectura final
+
+La implementación final queda estructurada de la siguiente manera:
+
+```text
+┌─────────────────────┐
+│    ReservaService   │
+└──────────┬──────────┘
+           │
+           │ publish()
+           ▼
+┌─────────────────────┐
+│   LaravelEventBus   │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│      RabbitMQ       │
+│   Queue: default    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    Queue Worker     │
+│ queue:work rabbitmq │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ ReservaCreada       │
+│ Listener            │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ ReservaCreada       │
+│ Notification        │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    Base de datos    │
+│    notifications    │
+└─────────────────────┘
+```
+
+---
+
+# 15. Conclusiones
+
+La implementación permitió evolucionar progresivamente el manejo de eventos del proyecto.
+
+Inicialmente se realizó el mapeo de los eventos del dominio y se creó una abstracción mediante `EventBus`.
+
+Posteriormente se implementó `InMemoryEventBus`, permitiendo comprobar el funcionamiento del patrón de eventos sin introducir inicialmente dependencias externas.
+
+Finalmente, el bus fue refactorizado para utilizar Laravel y RabbitMQ como infraestructura de mensajería. El listener `ReservaCreadaListener` fue configurado para ejecutarse mediante `ShouldQueue`.
+
+Las pruebas realizadas confirmaron que los eventos son publicados, enviados a RabbitMQ, procesados por el worker y finalmente utilizados para generar la notificación correspondiente.
+
+Por lo tanto, se completaron las tres actividades planteadas:
+
+1. **Mapear los eventos del dominio.**
+2. **Conectar e implementar un bus de eventos en memoria.**
+3. **Refactorizar el bus de eventos para utilizar un broker de mensajes externo, utilizando RabbitMQ.**
